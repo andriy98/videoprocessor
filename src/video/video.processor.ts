@@ -6,10 +6,11 @@ import { Job } from 'bull';
 export class VideoProcessor {
   private readonly logger = new Logger(VideoProcessor.name);
 
-  @Process('process')
-  handleProcess(job: Job) {
+  @Process({name: 'process', concurrency: 5})
+  async handleProcess(job: Job) {
     this.logger.debug('Start processing video data...');
     this.logger.debug(job.data);
+    await new Promise(resolve => setTimeout(resolve, 5000));
     this.logger.debug('Video processing completed !');
   }
 }
